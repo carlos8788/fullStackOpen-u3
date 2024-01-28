@@ -37,10 +37,10 @@ app.post('/api/persons', (req, res) => {
     const id = Math.floor(Math.random() * 1000000000)
 
     if (!(name && number)) return res.status(400).json({ message: 'Person incomplete' })
-    
+
     const existPerson = persons.find(person => person.name.toLowerCase() === name.toLowerCase())
-    if (existPerson) return res.status(400).json({ message: 'Person already exists', payload: { person: name } })
-    
+    if (existPerson) return res.status(400).json({ error: 'name must be unique', payload: { person: name } })
+
     const personOK = {
         id,
         name,
