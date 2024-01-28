@@ -26,10 +26,29 @@ app.delete('/api/persons/:id', (req, res) => {
     const person = persons.find(person => person.id === Number(id));
     if (person) {
         persons = persons.filter(person => person.id !== Number(id));
-        return res.json({message: 'Person was deleted succesufully'})
-    }else{
-        return res.status(404).json({message: 'Person not found'})
+        return res.json({ message: 'Person was deleted succesufully' })
+    } else {
+        return res.status(404).json({ message: 'Person not found' })
     }
+})
+
+app.post('/api/persons', (req, res) => {
+    const { name, number } = req.body
+    const id = Math.floor(Math.random() * 1000000000)
+
+    if (!(name && number)) return res.status(400).json({ message: 'Person incomplete' })
+    
+    const existPerson = persons.find(person => person.name.toLowerCase() === name.toLowerCase())
+    if (existPerson) return res.status(400).json({ message: 'Person already exists', payload: { person: name } })
+    
+    const personOK = {
+        id,
+        name,
+        number
+    }
+    persons.push(personOK)
+
+    res.json({ payload: personOK })
 })
 
 app.get('/info', (req, res) => {
