@@ -15,6 +15,12 @@ app.get('/api/persons', (req, res) => {
     res.json(persons)
 })
 
+app.get('/api/persons/:id', (req, res) => {
+    const { id } = req.params
+    const person = persons.find(person => person.id === Number(id));
+    (person) ? res.json(person) : res.status(404).json({message: 'No such person'})
+})
+
 app.get('/info', (req, res) => {
     let info = `<p>Phonebook has info for ${persons.length} people</p>
                 <p>${new Date().toString()}</p>`
